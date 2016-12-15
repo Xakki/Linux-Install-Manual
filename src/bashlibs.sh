@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export bashLibsVersion='0.1'
+
 myAskYN() 
 {
     local AMSURE
