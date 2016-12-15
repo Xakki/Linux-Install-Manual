@@ -29,6 +29,6 @@ myAskVal()
     if [ -z "$projectName" ]; then
         projectName="$2"
     fi
-    echo
+    echo "" 1>&2
     return 1
 } 
