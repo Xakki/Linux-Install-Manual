@@ -4,29 +4,39 @@ baseDir="/home/kvm"
 vmDir="$baseDir/vm"
 pressedFile="$baseDir/pressed.cfg"
 isoFile="$baseDir/debian-8.6.0-amd64-netinst.iso"
-# 
+
 
 cd $baseDir
 
 if [ -f "$baseDir/bashlibs.sh" ]; then
+    echo "Дополнительный фаил с библеотекой [OK]"
 else
     wget -nv https://raw.githubusercontent.com/Xakki/kvm.scripts/master/src/bashlibs.sh
+    chmod 0744 bashlibs.sh
 fi
+
 ./bashlibs.sh
 
+if [[ -z "$bashLibsVersion" ]]; then
+    echo "Ошибка загрузки библеотеки"
+    exit 0
+fi
 
 if [ -d "$vmDir" ]; then
+    echo "Директория VM [OK]"
 else
     mkdir "$vmDir"
 fi
 
 if [ -f "$isoFile" ]; then
+    echo "ISO образ [OK]"
 else
     myAskYN "ISO образ не найден. Скачать?" | exit 0
     wget -nv http://cdimage.debian.org/debian-cd/8.6.0/amd64/iso-cd/debian-8.6.0-amd64-netinst.iso
 fi
 
 if [ -f "$pressedFile" ]; then
+    echo "ISO образ [OK]"
 else
     wget -nv https://raw.githubusercontent.com/Xakki/kvm.scripts/master/src/pressed.cfg
 fi
