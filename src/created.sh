@@ -1,20 +1,37 @@
 #!/bin/bash
 
+baseDir="/home/kvm"
+vmDir="$baseDir/vm"
+pressedFile="$baseDir/pressed.cfg"
+isoFile="$baseDir/debian-8.6.0-amd64-netinst.iso"
+# 
+
+cd $baseDir
+
+if [ -f "$baseDir/bashlibs.sh" ]; then
+else
+    wget -nv https://raw.githubusercontent.com/Xakki/kvm.scripts/master/src/bashlibs.sh
+fi
 ./bashlibs.sh
 
-vmDir="/home/kvm/vm"
+
 if [ -d "$vmDir" ]; then
 else
     mkdir "$vmDir"
 fi
 
-isoFile="/home/kvm/debian-8.6.0-amd64-netinst.iso"
 if [ -f "$isoFile" ]; then
 else
     myAskYN "ISO образ не найден. Скачать?" | exit 0
-    wget http://cdimage.debian.org/debian-cd/8.6.0/amd64/iso-cd/debian-8.6.0-amd64-netinst.iso
+    wget -nv http://cdimage.debian.org/debian-cd/8.6.0/amd64/iso-cd/debian-8.6.0-amd64-netinst.iso
 fi
 
+if [ -f "$pressedFile" ]; then
+else
+    wget -nv https://raw.githubusercontent.com/Xakki/kvm.scripts/master/src/pressed.cfg
+fi
+
+echo
 
 projectName="test"
 myAskVal "Введите название виртмашины (оно же название фаила)" "$projectName"
@@ -40,10 +57,10 @@ virt-install \
 --name ${projectName} \
 --ram ${projectRam} \
 --vcpus ${projectCpu} \
---file /home/kvm/vm/${projectName}.img \
+--file ${vmDir}/${projectName}.img \
 --file-size=${projectHdd} \
 -c ${isoFile} \
---initrd-inject=./pressed.cfg
+--initrd-inject=${pressedFile}
 --extra-args="auto keyboard-configuration/xkb-keymap=en ip=192.168.11.$projectLastIp::192.168.11.1:255.255.255.0:$projectHost:eth0:none"
 --os-type linux
 --os-variant debianJessie \
