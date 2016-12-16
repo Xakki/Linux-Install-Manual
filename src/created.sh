@@ -7,6 +7,7 @@ baseDir="/home/kvm"
 vmDir="$baseDir/vm"
 pressedFile="$baseDir/pressed.cfg"
 isoFile="$baseDir/debian-8.6.0-amd64-netinst.iso"
+srcLib="https://raw.githubusercontent.com/Xakki/kvm.scripts/master/src/bashlibs.sh"
 
 cd $baseDir
 
@@ -14,7 +15,7 @@ if [ -f "$baseDir/bashlibs.sh" ]; then
     echo "Дополнительный фаил с библеотекой [OK]"
 else
     apt-get install qemu-kvm bridge-utils libvirt-bin virtinst -y -qq
-    wget -nv https://raw.githubusercontent.com/Xakki/kvm.scripts/master/src/bashlibs.sh
+    wget -nv --cache=off "$srcLib"
     chmod 0744 bashlibs.sh
 fi
 
@@ -37,7 +38,9 @@ if [ -f "$pressedFile" ]; then
     myAskYN "Настройки конфига автоустановки отредактировали? ($pressedFile) Продолжаем?" | exit 0
 else
     wget -nv https://raw.githubusercontent.com/Xakki/kvm.scripts/master/src/pressed.cfg
-    echo "Предварительно проверьте настройки конфига автоустановки $pressedFile!"
+    echo
+    echo "Предварительно проверьте настройки конфига автоустановки $pressedFile!!!!!!"
+    echo
     exit 0
 fi
 
