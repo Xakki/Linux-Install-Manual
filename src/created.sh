@@ -1,5 +1,6 @@
 #!/bin/bash
 set -o nounset
+#https://debian.pro/1334
 
 baseDir="/home/kvm"
 vmDir="$baseDir/vm"
@@ -7,6 +8,10 @@ pressedFile="$baseDir/pressed.cfg"
 isoFile="$baseDir/debian-8.6.0-amd64-netinst.iso"
 
 cd $baseDir
+
+
+# http://fai-project.org/fai-guide/
+apt-get install qemu-kvm bridge-utils libvirt-bin virtinst -y -qq
 
 if [ -f "$baseDir/bashlibs.sh" ]; then
     echo "Дополнительный фаил с библеотекой [OK]"
@@ -21,7 +26,7 @@ if [ -z $BLV ]; then
     echo "Ошибка загрузки библеотеки [error]"
     exit 0
 else
-    echo "Загруженна библеотека с версией $BLV"
+    echo "Загруженна библеотека с версией $BLV [OK]"
 fi
 
 if [ -d "$vmDir" ]; then
@@ -43,10 +48,9 @@ else
     wget -nv https://raw.githubusercontent.com/Xakki/kvm.scripts/master/src/pressed.cfg
 fi
 
-# http://fai-project.org/fai-guide/
-apt-get install fai-quickstart -y
-
 echo
+
+myAskYN "Настройки автоустановки отредактировали? ($pressedFile) Продолжаем?" | exit 0
 
 projectName="test"
 myAskVal "Введите название виртмашины (оно же название фаила)" "projectName"
@@ -61,11 +65,7 @@ let "projectRam *= 1024"
 projectHdd="10"
 myAskVal "Объем диска в Гб" "projectHdd"
 
-projectHost="test.example.ru"
-myAskVal "Укажите домен" "projectHost"
-
-projectLastIp="2"
-myAskVal "Укажите последнюю цифру IP (192.168.11.X)" "projectLastIp"
+echo 
 
 virt-install \
 --connect qemu:///system \
@@ -76,10 +76,10 @@ virt-install \
 --file-size="$projectHdd" \
 --location="http://ftp.nl.debian.org/debian/dists/jessie/main/installer-amd64/" \
 --initrd-inject="$pressedFile" \
---extra-args="auto keyboard-configuration/xkb-keymap=en ip=192.168.11.$projectLastIp::192.168.11.1:255.255.255.0:$projectHost:eth0:none" \
+--extra-args="auto keyboard-configuration/xkb-keymap=en" \
 --os-type=linux \
 --os-variant=debianwheezy \
--w bridge:br0 \
+--network=bridge:br0 \
 --vnc \
 --vncport=5902 \
 --hvm \
