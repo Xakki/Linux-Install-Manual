@@ -1,6 +1,7 @@
 #!/bin/bash
 set -o nounset
-#https://debian.pro/1334
+# https://debian.pro/1334
+# http://fai-project.org/fai-guide/
 
 baseDir="/home/kvm"
 vmDir="$baseDir/vm"
@@ -9,13 +10,10 @@ isoFile="$baseDir/debian-8.6.0-amd64-netinst.iso"
 
 cd $baseDir
 
-
-# http://fai-project.org/fai-guide/
-apt-get install qemu-kvm bridge-utils libvirt-bin virtinst -y -qq
-
 if [ -f "$baseDir/bashlibs.sh" ]; then
     echo "Дополнительный фаил с библеотекой [OK]"
 else
+    apt-get install qemu-kvm bridge-utils libvirt-bin virtinst -y -qq
     wget -nv https://raw.githubusercontent.com/Xakki/kvm.scripts/master/src/bashlibs.sh
     chmod 0744 bashlibs.sh
 fi
