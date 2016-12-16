@@ -35,22 +35,15 @@ else
     mkdir "$vmDir"
 fi
 
-if [ -f "$isoFile" ]; then
-    echo "ISO образ [OK]"
-else
-    myAskYN "ISO образ не найден. Скачать?" | exit 0
-    wget -nv http://cdimage.debian.org/debian-cd/8.6.0/amd64/iso-cd/debian-8.6.0-amd64-netinst.iso
-fi
-
 if [ -f "$pressedFile" ]; then
-    echo "ISO образ [OK]"
+    myAskYN "Настройки конфига автоустановки отредактировали? ($pressedFile) Продолжаем?" | exit 0
 else
     wget -nv https://raw.githubusercontent.com/Xakki/kvm.scripts/master/src/pressed.cfg
+    echo "Предварительно проверьте настройки конфига автоустановки $pressedFile!"
+    exit 0
 fi
 
 echo
-
-myAskYN "Настройки автоустановки отредактировали? ($pressedFile) Продолжаем?" | exit 0
 
 projectName="test"
 myAskVal "Введите название виртмашины (оно же название фаила)" "projectName"
