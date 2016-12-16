@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export bashLibsVersion='0.1'
+BLV='0.1'
 
 myAskYN() 
 {
