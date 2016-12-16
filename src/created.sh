@@ -1,4 +1,5 @@
 #!/bin/bash
+set -o nounset
 
 baseDir="/home/kvm"
 vmDir="$baseDir/vm"
@@ -15,11 +16,13 @@ else
     chmod 0744 bashlibs.sh
 fi
 
-./bashlibs.sh
+. bashlibs.sh
 
-if [[ -z "$bashLibsVersion" ]]; then
-    echo "Ошибка загрузки библеотеки"
+if [ -z $BLV ]; then
+    echo "Ошибка загрузки библеотеки [error]"
     exit 0
+else
+    echo "Загруженна библеотека с версией $BLV"
 fi
 
 if [ -d "$vmDir" ]; then
@@ -70,9 +73,9 @@ virt-install \
 --file ${vmDir}/${projectName}.img \
 --file-size=${projectHdd} \
 -c ${isoFile} \
---initrd-inject=${pressedFile}
---extra-args="auto keyboard-configuration/xkb-keymap=en ip=192.168.11.$projectLastIp::192.168.11.1:255.255.255.0:$projectHost:eth0:none"
---os-type linux
+--initrd-inject=${pressedFile} \
+--extra-args="auto keyboard-configuration/xkb-keymap=en ip=192.168.11.$projectLastIp::192.168.11.1:255.255.255.0:$projectHost:eth0:none" \
+--os-type linux \
 --os-variant debianJessie \
 -w bridge:br0 \
 --vnc \
@@ -82,10 +85,3 @@ virt-install \
 --autostart \
 --noautoconsole;
 
-#ip=192.168.1.2::192.168.1.1:255.255.255.0:test.example.com:eth0:none
-#ip=[ip]::[gateway]:[netmask]:[hostname]:[interface]:[autoconf]
-
-#--vnclisten=127.0.0.1 \
-#--graphics vnc,password=pass,listen=0.0.0.0,port=5903;
-#--extra-args "auto keyboard-configuration/xkb-keymap=en text"
-#--graphics vnc,password=password,listen=0.0.0.0,port=5901
