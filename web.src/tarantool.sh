@@ -14,5 +14,5 @@ deb-src http://download.tarantool.org/tarantool/1.7/debian/ $release main
 EOF
 
 # install
-# sudo apt-get update
+sudo apt-get update
 sudo apt-get -y install tarantool
