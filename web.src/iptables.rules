@@ -1,0 +1,59 @@
+*filter
+:INPUT DROP [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+:bad_packets - [0:0]
+:bad_tcp_packets - [0:0]
+:icmp_packets - [0:0]
+:tcp_inbound - [0:0]
+:tcp_outbound - [0:0]
+:udp_inbound - [0:0]
+:udp_outbound - [0:0]
+[0:0] -A INPUT -i lo -j ACCEPT
+[0:0] -A INPUT -i br0 -j ACCEPT
+[0:0] -A INPUT -i eth0 -j ACCEPT
+[0:0] -A INPUT -j bad_packets
+[0:0] -A INPUT -i eth0 -p tcp -j tcp_inbound
+[0:0] -A INPUT -i br0 -p tcp -j tcp_inbound
+[0:0] -A INPUT -i eth0 -p udp -j udp_inbound
+[0:0] -A INPUT -i br0 -p udp -j udp_inbound
+[0:0] -A INPUT -i eth0 -p icmp -j icmp_packets
+[0:0] -A INPUT -i eth0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+[0:0] -A INPUT -i br0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+[0:0] -A INPUT -m pkttype --pkt-type broadcast -j DROP
+[0:0] -A FORWARD -i eth0 -o br0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+[0:0] -A FORWARD -i br0 -o eth0 -j ACCEPT
+[0:0] -A OUTPUT -j ACCEPT
+[0:0] -A bad_packets -m state --state INVALID -j DROP
+[0:0] -A bad_packets -p tcp -j bad_tcp_packets
+[0:0] -A bad_packets -j RETURN
+[0:0] -A bad_tcp_packets -p tcp -m tcp --tcp-flags FIN,SYN,RST,PSH,ACK,URG NONE -j DROP
+[0:0] -A bad_tcp_packets -p tcp -m tcp --tcp-flags FIN,SYN,RST,PSH,ACK,URG FIN,SYN,RST,PSH,ACK,URG -j DROP
+[0:0] -A bad_tcp_packets -p tcp -m tcp --tcp-flags FIN,SYN FIN,SYN -j DROP
+[0:0] -A bad_tcp_packets -p tcp -m tcp --tcp-flags FIN,ACK FIN -j DROP
+[0:0] -A bad_tcp_packets -p tcp -m tcp --tcp-flags FIN,SYN,RST,PSH,ACK,URG SYN -m limit --limit 10/sec --limit-burst 10 -j ACCEPT
+[0:0] -A bad_tcp_packets -p tcp -m tcp --tcp-flags FIN,SYN,RST,PSH,ACK,URG SYN -j DROP
+[0:0] -A bad_tcp_packets -p tcp -m tcp --tcp-flags SYN,RST SYN,RST -j DROP
+[0:0] -A bad_tcp_packets -p tcp -j RETURN
+[0:0] -A icmp_packets -p icmp -f -j DROP
+[0:0] -A icmp_packets -p icmp -m icmp --icmp-type 8 -m limit --limit 1/sec -j ACCEPT
+[0:0] -A icmp_packets -p icmp -m icmp --icmp-type 8 -j DROP
+[0:0] -A icmp_packets -p icmp -j RETURN
+[0:0] -A tcp_inbound -p tcp -m tcp --dport 80 -j ACCEPT
+[0:0] -A tcp_inbound -p tcp -m tcp --dport 433 -j ACCEPT
+[0:0] -A tcp_inbound -p tcp -m tcp --dport 22 -j ACCEPT
+[0:0] -A tcp_inbound -p tcp -j RETURN
+[0:0] -A tcp_outbound -p tcp -j ACCEPT
+[0:0] -A udp_inbound -p udp -m udp --dport 137 -j DROP
+[0:0] -A udp_inbound -p udp -m udp --dport 138 -j DROP
+[0:0] -A udp_inbound -p udp -j RETURN
+[0:0] -A udp_outbound -p udp -j ACCEPT
+COMMIT
+
+*nat
+:PREROUTING ACCEPT [0:0]
+:INPUT ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+:POSTROUTING ACCEPT [0:0]
+
+COMMIT
