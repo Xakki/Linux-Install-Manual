@@ -65,6 +65,15 @@ chmod 0744 tarantool.sh
 ---------------------
 
 ### Postgres
+from manual (https://www.postgresql.org/download/linux/debian/)
+
+```bash
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+sudo rm -f /etc/apt/sources.list.d/*postgresql*.list
+sudo echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -c -s`-pgdg main" > /etc/apt/sources.list.d/postgresql.list
+sudo apt-get update
+sudo apt-get install postgresql-9.6
+```
 
 ---------------------
 
