@@ -88,3 +88,18 @@ sudo apt-get install postgresql-9.6
 ### MongoDB
 
 ---------------------
+
+
+### HTTPS (SSL)
+from manual (https://certbot.eff.org/#debianjessie-nginx)
+Ставим ПО certbot
+```bash
+sudo echo "deb http://ftp.debian.org/debian `lsb_release -c -s`-backports main" > /etc/apt/sources.list
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install certbot -t jessie-backports
+```
+И генерируем сертификат на работающий домен (домен должен быть доступен из вне и локально можно на нем загрузить фаилы и глянуть на них из вне для подтверждения)
+```bash
+certbot certonly --webroot -w /var/www/example.com/public_html -d example.com --email admin@example.com
+```
