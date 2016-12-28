@@ -74,7 +74,34 @@ sudo echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -c -s`-pgdg
 sudo apt-get update
 sudo apt-get install postgresql-9.6
 ```
+Входим в БД под рутом естественно (пароль не должен спрашивать)
+```bash
+su - postgres
+```
+входим в консоль и запускаем Postgres
+```bash
+psql
+```
+Увидем следуещее (если все ОК)
+```bash
+postgres@srvname:~$ psql
+psql (9.6.1)
+Введите "help", чтобы получить справку.
 
+postgres=# 
+```
+Выполняем команды для нового пароля
+```bash
+postgres=# ALTER USER postgres PASSWORD 'postgres' 
+postgres-# \password postgres 
+Введите новый пароль: 
+Повторите его: 
+Пароли не совпадают. 
+postgres-# \password postgres 
+Введите новый пароль: 
+Повторите его: 
+postgres-# 
+```
 ---------------------
 
 ### Mysql
