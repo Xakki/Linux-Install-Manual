@@ -102,6 +102,12 @@ postgres-# \password postgres
 Повторите его: 
 postgres-# 
 ```
+Команда для создания БД и пользователя к нему
+```bash
+CREATE DATABASE testdb;
+CREATE USER testuser WITH password 'passwords';
+GRANT ALL privileges ON DATABASE testdb TO testuser;
+```
 ---------------------
 
 ### Mysql
