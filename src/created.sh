@@ -4,9 +4,7 @@ set -o nounset
 # http://fai-project.org/fai-guide/
 
 baseDir="/home/kvm"
-vmDir="$baseDir/vm"
 pressedFile="$baseDir/pressed.cfg"
-isoFile="$baseDir/debian-8.6.0-amd64-netinst.iso"
 srcLib="https://raw.githubusercontent.com/Xakki/kvm.scripts/master/src/bashlibs.sh"
 
 cd $baseDir
@@ -26,12 +24,6 @@ if [ -z $BLV ]; then
     exit 0
 else
     echo "Загруженна библеотека с версией $BLV [OK]"
-fi
-
-if [ -d "$vmDir" ]; then
-    echo "Директория VM [OK]"
-else
-    mkdir "$vmDir"
 fi
 
 if [ -f "$pressedFile" ]; then
@@ -66,11 +58,11 @@ virt-install \
 --name="$projectName" \
 --ram="$projectRam" \
 --vcpus="$projectCpu" \
---file="$vmDir/$projectName.img" \
+--file="/var/lib/libvirt/images/$projectName.img" \
 --file-size="$projectHdd" \
 --location="http://ftp.nl.debian.org/debian/dists/jessie/main/installer-amd64/" \
 --initrd-inject="$pressedFile" \
---extra-args="auto keyboard-configuration/xkb-keymap=en" \
+--extra-args="auto" \
 --os-type=linux \
 --os-variant=debianwheezy \
 --network=bridge:br0 \
@@ -82,4 +74,5 @@ virt-install \
 --noautoconsole \
 --debug;
 
+# --extra-args="auto keyboard-configuration/xkb-keymap=en" \
 
