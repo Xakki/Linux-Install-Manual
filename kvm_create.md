@@ -134,7 +134,7 @@ cd /home/kvm
 ```
 wget https://raw.githubusercontent.com/Xakki/kvm.scripts/master/src/created.sh
 chmod 0774 created.sh
-./create.sh
+./created.sh
 ```
 
 Предварително скачается дополнительная библиотека и фаил для автоустановки -  pressed.cfg, где нужно указать свои настройки и потом снова запускаем create.sh и отвечаем на вопросы по конфигурации
