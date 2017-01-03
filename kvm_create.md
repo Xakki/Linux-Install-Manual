@@ -1,12 +1,17 @@
-# Установка Виртуальной ОС Debian
+## Установка Виртуальной ОС Debian
 
 Проверка аппаратной поддержки
-# egrep '(vmx|svm)' --color=always /proc/cpuinfo
 
+```bash
+egrep '(vmx|svm)' --color=always /proc/cpuinfo
+```
 
 на Сервере все обновляем
-# apt-get update; apt-get upgrade -y;
-# apt-get install qemu-kvm bridge-utils libvirt-bin virtinst virt-top
+
+```bash
+apt-get update; apt-get upgrade -y;
+apt-get install qemu-kvm bridge-utils libvirt-bin virtinst virt-top
+```
 
 qemu-kvm — основной эмулятор, сама виртуализация (модуль для ядра).
 bridge-utils — утилиты для конфигурирования Linux Ethernet мост.
@@ -14,16 +19,28 @@ libvirt-bin — виртуальная оболочка API.
 virtinst — софт для создания впс.
 
 Проверяем установленоое
-# lsmod | grep kvm
+
+```bash
+lsmod | grep kvm
+```
 
 На домашнем установим
-# apt-get update; apt-get install virt-manager
+
+```bash
+apt-get update; apt-get install virt-manager
+```
 
 -------------------
 
-Настроим /etc/sysctl.conf
+### Настроим /etc/sysctl.conf
 
-#форвардинга и проксирования arp запросов
+форвардинга и проксирования arp запросов
+
+```
+net.ipv4.conf.all.forwarding=1
+net.ipv6.conf.all.forwarding=1
+net.ipv4.conf.all.proxy_arp=1
+
 net.ipv4.conf.all.forwarding=1
 net.ipv6.conf.all.forwarding=1
 net.ipv4.conf.all.proxy_arp=1
@@ -68,12 +85,19 @@ kernel.msgmax=65536
 kernel.shmall=268435456
 ##Controls the maximum shared segment size, in bytes
 kernel.shmmax=494967295
+```
 
 ------------------
-Сетевой мост
-# nano /etc/network/interfaces
+
+### Сетевой мост
+
+```
+nano /etc/network/interfaces
+```
+
 добавляем 
 
+```
 auto dummy0
 iface dummy0 inet manual
 
@@ -86,34 +110,44 @@ iface br0 inet static
         bridge_fd 0
         bridge_maxwait 0
 auto br0
+```
 
 ---------------------
 
 Пора перезагрузится
-# reboot
+
+```
+reboot
+```
 
 ----------------------
-# mkdir /home/kvm
-# cd /home/kvm
 
-Скачиваем образ если ставим из образа
-# wget http://cdimage.debian.org/debian-cd/8.6.0/amd64/iso-cd/debian-8.6.0-amd64-netinst.iso
+Создадим спец директорию для наших виртуальных машин и будем проводить все операции в нем
+
+```
+mkdir /home/kvm
+cd /home/kvm
+```
 
 Скачиваем скрипты для установки
-# wget https://raw.githubusercontent.com/Xakki/kvm.scripts/master/src/pressed.cfg
-# chmod 0774 created.sh
 
-Запусаем скрипт (скачивается дополнительные фаилы)
-# ./create.sh
-Предварително в pressed.cfg - указать свои настройки и потом снова запускаем и отвечаем на вопросы по конфигурации
-# ./create.sh
+```
+wget https://raw.githubusercontent.com/Xakki/kvm.scripts/master/src/created.sh
+chmod 0774 created.sh
+./create.sh
+```
+
+Предварително скачается дополнительная библиотека и фаил для автоустановки -  pressed.cfg, где нужно указать свои настройки и потом снова запускаем create.sh и отвечаем на вопросы по конфигурации
 
 Запускаем виртуалку
-# virsh start temporary
 
+```
+virsh start temporary
+```
 
 
 ---------------------
+
 Источники:
 http://linuxguru.ru/virtualization/kvm/ustanovka-virtualizacii-kvm-v-debian-squeeze/
 http://it.w-develop.com/ustanovka-virtualizacii-kvm-v-debian/
