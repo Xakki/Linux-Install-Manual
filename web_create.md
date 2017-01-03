@@ -2,7 +2,7 @@
 
 Only Debian
 
-```
+```bash
 cd /temp
 wget https://raw.githubusercontent.com/Xakki/kvm.scripts/master/src/install.sh
 chmod 0774 install.sh
