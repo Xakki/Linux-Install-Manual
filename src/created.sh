@@ -52,6 +52,8 @@ projectHdd="10"
 myAskVal "Объем диска в Гб" "projectHdd"
 
 echo 
+# http://www.andybotting.com/automating-debian-installs-with-preseeding
+# http://kerunix.com/preseed_kvm_using_virt_install.html
 
 virt-install \
 --connect qemu:///system \
@@ -62,7 +64,7 @@ virt-install \
 --file-size="$projectHdd" \
 --location="http://ftp.nl.debian.org/debian/dists/jessie/main/installer-amd64/" \
 --initrd-inject="$pressedFile" \
---extra-args="auto" \
+--extra-args="auto=true" \
 --os-type=linux \
 --os-variant=debianwheezy \
 --network=bridge:br0 \
@@ -72,6 +74,7 @@ virt-install \
 --accelerate \
 --autostart \
 --noautoconsole \
+--nographics \
 --debug;
 
 # --extra-args="auto keyboard-configuration/xkb-keymap=en" \
