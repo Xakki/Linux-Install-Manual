@@ -4,7 +4,7 @@ set -o nounset
 # http://fai-project.org/fai-guide/
 
 baseDir="/home/kvm"
-pressedFile="$baseDir/pressed.cfg"
+preseedFile="$baseDir/preseed.cfg"
 srcLib="https://raw.githubusercontent.com/Xakki/kvm.scripts/master/src/bashlibs.sh"
 
 cd $baseDir
@@ -26,12 +26,12 @@ else
     echo "Загруженна библеотека с версией $BLV [OK]"
 fi
 
-if [ -f "$pressedFile" ]; then
-    myAskYN "Настройки конфига автоустановки отредактировали? ($pressedFile) Продолжаем?" | exit 0
+if [ -f "$preseedFile" ]; then
+    myAskYN "Настройки конфига автоустановки отредактировали? ($preseedFile) Продолжаем?" | exit 0
 else
-    wget -nv https://raw.githubusercontent.com/Xakki/kvm.scripts/master/src/pressed.cfg
+    wget -nv https://raw.githubusercontent.com/Xakki/kvm.scripts/master/src/preseed.cfg
     echo
-    echo "Предварительно проверьте настройки конфига автоустановки $pressedFile!!!!!!"
+    echo "Предварительно проверьте настройки конфига автоустановки $preseedFile!!!!!!"
     echo
     exit 0
 fi
@@ -74,7 +74,6 @@ virt-install \
 --accelerate \
 --autostart \
 --noautoconsole \
---nographics \
 --debug;
 
 # --extra-args="auto keyboard-configuration/xkb-keymap=en" \
