@@ -136,3 +136,12 @@ sudo apt-get install certbot -t jessie-backports
 ```bash
 certbot certonly --webroot -w /var/www/example.com/public_html -d example.com --email admin@example.com
 ```
+---------------------
+
+### EXIM4
+```bash
+cd /temp
+wget https://raw.githubusercontent.com/Xakki/kvm.scripts/master/web.src/exim4.sh
+chmod 0774 exim4.sh
+./exim4.sh
+```
