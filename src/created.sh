@@ -1,5 +1,6 @@
 #!/bin/bash
 set -o nounset
+set -o errexit
 # https://debian.pro/1334
 # http://fai-project.org/fai-guide/
 
