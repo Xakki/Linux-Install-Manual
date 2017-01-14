@@ -1,10 +1,11 @@
 #!/bin/bash
 set -o nounset
+set -o errexit
 # https://blog-tree.com/post/2014/06/exim4
 
 srcLib="https://raw.githubusercontent.com/Xakki/kvm.scripts/master/src/bashlibs.sh"
 
-if [ -f "$baseDir/bashlibs.sh" ]; then
+if [ -f "bashlibs.sh" ]; then
     echo "Дополнительный фаил с библеотекой [OK]"
 else
     apt-get install exim4 -y -qq
@@ -12,19 +13,24 @@ else
     chmod 0744 bashlibs.sh
 fi
 
-myAskYN "Запускаем настройку?" | dpkg-reconfigure exim4-config
+. bashlibs.sh
+
+myAskYN "Запускаем настройку?" && dpkg-reconfigure exim4-config
 
 testEmail=""
 myAskVal "Введите ваш Email для тестового письма" "testEmail"
 
-echo "Это тестовое письмо отправлено с вашего сервера!" | mail -s "Тестовое письмо" $testEmail
-
-myAskYN "Проверьте почту на наличие тестового письма (проверьте спам). Если не пришло, то надо проверить настройки. Заканчиваем на этом?" | exit 0
+if [[ -n "$testEmail" ]] ; then
+   echo "Это тестовое письмо отправлено с вашего сервера!" | mail -s "Тестовое письмо" $testEmail
+   myAskYN "Проверьте почту на наличие тестового письма (проверьте спам). Если не пришло, то надо проверить настройки. Заканчиваем на этом?" && exit 0
+fi
 
 varDomain=""
-myAskVal "Укажите домен" "varDomain"
+myAskVal "Укажите домен" "varDomain" "requare"
 
-mkdir /etc/exim4/dkim
+if [[ ! -d "/etc/exim4/dkim" ]]; then
+    mkdir /etc/exim4/dkim
+fi
 cd /etc/exim4/dkim
 openssl genrsa -out $varDomain.key 1024
 openssl rsa -in $varDomain.key -pubout > $varDomain.pub
