@@ -145,3 +145,15 @@ wget https://raw.githubusercontent.com/Xakki/kvm.scripts/master/web.src/exim4.sh
 chmod 0774 exim4.sh
 ./exim4.sh
 ```
+---------------------
+
+### Автообновление
+```bash
+apt-get install cron-apt
+nano /etc/cron-apt/config
+```
+Добавить следующее
+```
+MAILTO="root@xakki.ru"
+MAILON="upgrade"
+```
