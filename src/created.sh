@@ -9,7 +9,7 @@ srcLib="https://raw.githubusercontent.com/Xakki/kvm.scripts/master/src/bashlibs.
 
 cd $baseDir
 
-if [ -f "$baseDir/bashlibs.sh" ]; then
+if [[ -f "$baseDir/bashlibs.sh" ]]; then
     echo "Дополнительный фаил с библеотекой [OK]"
 else
     apt-get install qemu-kvm bridge-utils libvirt-bin virtinst -y -qq
@@ -19,14 +19,14 @@ fi
 
 . bashlibs.sh
 
-if [ -z $BLV ]; then
+if [[ -z $BLV ]]; then
     echo "Ошибка загрузки библеотеки [error]"
     exit 0
 else
     echo "Загруженна библеотека с версией $BLV [OK]"
 fi
 
-if [ -f "$preseedFile" ]; then
+if [[ -f "$preseedFile" ]]; then
     myAskYN "Настройки конфига автоустановки отредактировали? ($preseedFile) Продолжаем?" | exit 0
 else
     wget -nv https://raw.githubusercontent.com/Xakki/kvm.scripts/master/src/preseed.cfg
