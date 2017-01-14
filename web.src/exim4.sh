@@ -58,4 +58,10 @@ echo
 echo "v=DKIM1; k=rsa; p={сюда вставить публичныйключ}"
 echo
 
+# Проверка настроек
 # exim -bP transports | grep dkim
+
+# Для получений секретного ключа от яндекс ПДД
+# https://pddimp.yandex.ru/api2/admin/get_token
+# curl -H 'PddToken: R453HHVK7SBD5TBV5R46CXQNEX7OGNW5JDFLOFPZWYGUGTCWTTNA' 'https://pddimp.yandex.ru/api2/admin/dkim/status?domain=xakki.ru&secretkey=yes'
+
