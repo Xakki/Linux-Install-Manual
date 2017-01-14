@@ -2,6 +2,8 @@
 set -o nounset
 set -o errexit
 # https://blog-tree.com/post/2014/06/exim4
+echo
+cd $(dirname $(readlink -e $0))
 
 srcLib="https://raw.githubusercontent.com/Xakki/kvm.scripts/master/src/bashlibs.sh"
 
@@ -31,19 +33,19 @@ myAskVal "Укажите домен" "varDomain" "requare"
 if [[ ! -d "/etc/exim4/dkim" ]]; then
     mkdir /etc/exim4/dkim
 fi
+
 cd /etc/exim4/dkim
 openssl genrsa -out $varDomain.key 1024
 openssl rsa -in $varDomain.key -pubout > $varDomain.pub
 #chown exim:exim $varDomain.key
 #chmod 640 $varDomain.key
 
-
-sudo tee /etc/exim4/conf.d/main/01_exim4-config_listmacrosdefs <<- EOF
+echo "
 DKIM_DOMAIN = $varDomain
 DKIM_SELECTOR = mail
 DDKIM_PRIVATE_KEY = /etc/exim4/dkim/$varDomain.key
 DKIM_CANON = relaxed
-EOF
+" >> /etc/exim4/conf.d/main/01_exim4-config_listmacrosdefs
 
 service exim4 restart
 echo
