@@ -43,7 +43,7 @@ openssl rsa -in $varDomain.key -pubout > $varDomain.pub
 echo "
 DKIM_DOMAIN = $varDomain
 DKIM_SELECTOR = mail
-DDKIM_PRIVATE_KEY = /etc/exim4/dkim/$varDomain.key
+DKIM_PRIVATE_KEY = /etc/exim4/dkim/$varDomain.key
 DKIM_CANON = relaxed
 " >> /etc/exim4/conf.d/main/01_exim4-config_listmacrosdefs
 
@@ -58,3 +58,4 @@ echo
 echo "v=DKIM1; k=rsa; p={сюда вставить публичныйключ}"
 echo
 
+# exim -bP transports | grep dkim
