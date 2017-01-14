@@ -1,6 +1,8 @@
 #!/bin/bash
+set -o nounset
+set -o errexit
 
-BLV='0.1'
+BLV='0.2'
 
 myAskYN() 
 {
@@ -23,8 +25,11 @@ myAskVal()
     local local_var
     eval 'echo -n "$1 [$'$2'] "'
     read local_var
-    [ -n "$local_var" ] && eval $2=\$local_var
-    echo "" 1>&2
-    return 1
-
+    if [ -n "$local_var" ] ; then
+        eval $2=\$local_var
+        echo "" 1>&2
+    else
+        myAskVal "$1" "$2"
+    fi
+    return 0
 } 
