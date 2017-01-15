@@ -145,6 +145,11 @@ wget https://raw.githubusercontent.com/Xakki/kvm.scripts/master/web.src/exim4.sh
 chmod 0774 exim4.sh
 ./exim4.sh
 ```
+Тестирование писем http://mail-tester.com
+Важно настройть правильно
+1 - DKIM
+2 - SPF
+3 - rDNS указывать на текущий домен (это могут сделать только провайдеры или хостеры)
 ---------------------
 
 ### Автообновление
