@@ -41,6 +41,7 @@ openssl rsa -in $varDomain.key -pubout > $varDomain.pub
 #chmod 640 $varDomain.key
 
 echo "
+PRIMARY_HOST_NAME = $varDomain
 DKIM_DOMAIN = $varDomain
 DKIM_SELECTOR = mail
 DKIM_PRIVATE_KEY = /etc/exim4/dkim/$varDomain.key
@@ -51,12 +52,16 @@ service exim4 restart
 echo
 echo "Прописываем открытый ключ в DNS"
 echo
-echo /etc/exim4/dkim/$varDomain.pub
+cat /etc/exim4/dkim/$varDomain.pub
 echo
 echo "Добавляем в DNS запись вида TXT, имеющую название mail._domainkey.$varDomain, содержащую"
 echo
 echo "v=DKIM1; k=rsa; p={сюда вставить публичныйключ}"
 echo
+
+echo "
+MAIN_TLS_ENABLE = yes
+" >> /etc/exim4/conf.d/main/03_exim4-config_tlsoptions
 
 # Проверка настроек
 # exim -bP transports | grep dkim
