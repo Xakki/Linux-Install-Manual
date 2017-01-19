@@ -11,6 +11,7 @@ chmod 0774 install.sh
 ---------------------
 
 ### Настроем iptables
+http://www.opennet.ru/docs/RUS/iptables/
 
 #### Ручная настройка 
 
