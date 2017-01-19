@@ -12,6 +12,24 @@ chmod 0774 install.sh
 
 ### Настроем iptables
 
+#### Ручная настройка 
+
+1. закрыть все входящие порты
+ iptables -P INPUT DROP
+2. открыть все исходящие порты
+ iptables -P OUTPUT ACCEPT
+3. открыть порт 80 для всех входящих соединений
+ iptables -A INPUT -p tcp --dport 80,443,22 -j ACCEPT
+4. иои открыть 22 порт только для конкретного IP
+ iptables -A INPUT -m multiport --dports 22 -s IP_ADDRESS -j ACCEPT
+
+Сохранить конфигурацию
+ iptables-save -c >  /etc/iptables.rules
+Востановить
+ iptables-restore < /etc/iptables.rules
+
+##### Мой конфиг для защиты от всех бед
+
 ```bash
 wget https://raw.githubusercontent.com/Xakki/kvm.scripts/master/web.src/iptables.rules
 ```
