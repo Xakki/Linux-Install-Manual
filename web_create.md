@@ -32,9 +32,13 @@ chmod 0774 install.sh
  ```
 
 Сохранить конфигурацию
+ ```
  iptables-save -c >  /etc/iptables.rules
+  ```
 Востановить
+ ```
  iptables-restore < /etc/iptables.rules
+  ```
 
 ##### Мой конфиг для защиты от всех бед
 
