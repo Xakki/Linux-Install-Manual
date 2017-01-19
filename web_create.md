@@ -15,13 +15,21 @@ chmod 0774 install.sh
 #### Ручная настройка 
 
 закрыть все входящие порты
+ ```
  iptables -P INPUT DROP
+ ```
 открыть все исходящие порты
+ ```
  iptables -P OUTPUT ACCEPT
+ ```
 открыть порт 80 для всех входящих соединений
+ ```
  iptables -A INPUT -p tcp --dport 80,443,22 -j ACCEPT
+ ```
 или открыть 22 порт только для конкретного IP
+ ```
  iptables -A INPUT -m multiport --dports 22 -s IP_ADDRESS -j ACCEPT
+ ```
 
 Сохранить конфигурацию
  iptables-save -c >  /etc/iptables.rules
