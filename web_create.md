@@ -182,6 +182,12 @@ chmod 0774 exim4.sh
 * SPF
 * rDNS указывать на текущий домен (это могут сделать только провайдеры или хостеры) (nslookup 127.0.0.1)
 
+HELP
+* [Командная строка Exim](http://www.lissyara.su/doc/exim/4.70/the_exim_command_line/)
+* [Главная конфигурация Exim](http://www.lissyara.su/doc/exim/4.62/main_configuration/)
+* [Использование exim'a как клиента без очереди сообщений](http://www.lissyara.su/doc/exim/4.70/using_exim_as_a_non-queueing_client/)
+* [Полезные команды почтового сервера Exim, шпаргалка](http://vds-admin.ru/mail/poleznye-komandy-pochtovogo-servera-exim-shpargalka)
+
 ---------------------
 
 ### Автообновление
