@@ -167,6 +167,12 @@ sudo apt-get install certbot -t jessie-backports
 ```bash
 certbot certonly --webroot -w /var/www/example.com/public_html -d example.com --email admin@example.com
 ```
+[Nginx и https. Получаем класс А+ ](https://habrahabr.ru/post/252821/)
+
+openssl dhparam -out /etc/nginx/ssl/dh2048.pem 2048
+или 
+openssl dhparam -out /etc/nginx/ssl/dh4096.pem 4096
+
 ---------------------
 
 ### EXIM4
