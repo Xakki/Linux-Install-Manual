@@ -28,7 +28,7 @@ else
 fi
 
 if [[ -f "$preseedFile" ]]; then
-    myAskYN "Настройки конфига автоустановки отредактировали? ($preseedFile) Продолжаем?" | exit 0
+    myAskYN "Настройки конфига автоустановки отредактировали? ($preseedFile) Продолжаем?" || exit 0
 else
     wget -nv https://raw.githubusercontent.com/Xakki/kvm.scripts/master/src/preseed.cfg
     echo
