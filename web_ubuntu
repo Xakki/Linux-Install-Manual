@@ -1,0 +1,50 @@
+#!/bin/bash
+
+apt-get -qq install lsb-release
+codeName="$(lsb_release -c -s)"
+
+wget http://nginx.org/keys/nginx_signing.key -O nginx_signing.key
+apt-key add nginx_signing.key
+listName="/etc/apt/sources.list.d/nginx.list"
+echo "" > "$listName"
+echo "deb http://nginx.org/packages/ubuntu/ $codeName nginx" >> "$listName"
+echo "deb-src http://nginx.org/packages/ubuntu/ $codeName nginx" >> "$listName"
+echo "Nginx ready for instal - OK"
+
+add-apt-repository ppa:ondrej/php
+apt-get update
+apt-get install -y software-properties-common python-software-properties
+
+apt -y install nginx mysql-server mysql-client memcached git
+
+## for PHP 5
+#apt -y install php5.6 php5.6-common php5.6-cli php5.6-curl php5.6-geoip php5.6-fpm php5.6-gd php5.6-imap php5.6-json php5.6-imagick php5.6-mcrypt php5.6-memcache php5.6-memcached php5.6-mysql php5
+.6-xhprof php5.6-xsl php5.6-bcmath
+## ioncube plugin
+#wget https://github.com/Xakki/kvm.scripts/raw/master/src/ioncube_loader_lin_5.6.so -O /usr/lib/php/20131226/ioncube_loader_lin_5.6.so
+#echo "zend_extension=ioncube_loader_lin_5.6.so" > /etc/php/5.6/mods-available/ioncube.ini
+#ln -sf /etc/php/5.6/mods-available/ioncube.ini /etc/php/5.6/fpm/conf.d/04-ioncube.ini
+#ln -sf /etc/php/5.6/mods-available/ioncube.ini /etc/php/5.6/cli/conf.d/04-ioncube.ini
+#sed -i.bak "s/short_open_tag = Off/short_open_tag = On/g" /etc/php/5.6/fpm/php.ini
+#sed -i.bak "s/short_open_tag = Off/short_open_tag = On/g" /etc/php/5.6/cli/php.ini
+
+## for PHP 7
+apt -y install php7.2 php7.2-bcmath php7.2-cgi php7.2-cli php7.2-common php7.2-curl php7.2-fpm php7.2-gd php7.2-imap php7.2-json php7.2-mbstring php7.2-mysql php7.2-opcache php7.2-zip
+sed -i.bak "s/short_open_tag = Off/short_open_tag = On/g" /etc/php/7.2/fpm/php.ini
+sed -i.bak "s/short_open_tag = Off/short_open_tag = On/g" /etc/php/7.2/cli/php.ini
+
+# Апач нафиг
+apt purge apache2*
+
+## NGINX configure
+mkdir /etc/nginx/ssl
+openssl dhparam -out /etc/nginx/ssl/dh2048.pem 2048
+# openssl dhparam -out /etc/nginx/ssl/dh4096.pem 4096
+
+wget https://github.com/Xakki/kvm.scripts/raw/master/src/nginx/fpm5.6 -O /etc/nginx/fpm5.6
+wget https://github.com/Xakki/kvm.scripts/raw/master/src/nginx/fpm7.2 -O /etc/nginx/fpm7.2
+
+service nginx restart
+
+
+
