@@ -19,6 +19,7 @@ if [[ 1 ]]; then
 fi
 
 if [[ 1 ]]; then
+  # Only DEBIAN
   rm dotdeb.gpg
   wget https://www.dotdeb.org/dotdeb.gpg
   apt-key add dotdeb.gpg
