@@ -56,6 +56,10 @@ openssl dhparam -out /etc/nginx/ssl/dh2048.pem 2048
 
 wget https://github.com/Xakki/kvm.scripts/raw/master/src/nginx/fpm5.6 -O /etc/nginx/fpm5.6
 wget https://github.com/Xakki/kvm.scripts/raw/master/src/nginx/fpm7.2 -O /etc/nginx/fpm7.2
-
+wget https://github.com/Xakki/kvm.scripts/raw/master/src/nginx/proxy_params -O /etc/nginx/proxy_params
+wget https://github.com/Xakki/kvm.scripts/raw/master/src/nginx/static_params -O /etc/nginx/static_params
+chown -R root:root /etc/nginx/
+# find . -type f -exec chmod 0664 {} \;
+# find . -type d -exec chmod 0775 {} \;
 service nginx restart
 
