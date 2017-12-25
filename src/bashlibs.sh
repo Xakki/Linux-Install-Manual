@@ -87,7 +87,7 @@ getDumpDB()
     exs="ssh -o 'Compression yes' -o 'CompressionLevel 9' $sshconnect mysqldump -u$mylogin -p$mypass $LOCALDB > /var/backup/$LOCALDB.sql"
     eval "$exs"
 
-    if ![[ -f /var/backup/$LOCALDB.sql ]]; then
+    if ! [[ -f /var/backup/$LOCALDB.sql ]]; then
        echo 
        echo "Error download dump"
        echo
