@@ -88,7 +88,9 @@ getDumpDB()
     eval "$exs"
 
     if ![[ -f /var/backup/$LOCALDB.sql ]]; then
+       echo 
        echo "Error download dump"
+       echo
        return 1
     fi
     echo "Download complete"
