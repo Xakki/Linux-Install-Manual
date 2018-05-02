@@ -46,13 +46,14 @@ apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74C
 # Добавление репозитория в apt
 add-apt-repository 'deb [arch=amd64,i386,ppc64el] http://mirror.mephi.ru/mariadb/repo/10.3/ubuntu xenial main'
 
-echo "****** install Sphinx 2.2 install *******"
+#Sphinx 2.2
 # apt install unixodbc libpq5
 add-apt-repository ppa:builds/sphinxsearch-rel22
-echo "deb http://ppa.launchpad.net/builds/sphinxsearch-rel22/ubuntu xenial main" >> "/etc/apt/sources.list.d/builds-ubuntu-sphinxsearch-rel22-bionic.list"
-#bionic
-#xenial 
-apt update
+echo "deb http://ppa.launchpad.net/builds/sphinxsearch-rel22/ubuntu xenial main" > "/etc/apt/sources.list.d/builds-ubuntu-sphinxsearch-rel22-bionic.list"
+
+#Postgres
+echo "deb http://apt.postgresql.org/pub/repos/apt/ $codeName-pgdg main" > "/etc/apt/sources.list.d/pgdg.list"
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
 
 echo " ******* Remove apache ******"
 apt purge apache2*
@@ -61,15 +62,14 @@ echo
 myAskYN "APT configured! Continue?" || exit 0
 echo
 
+apt update
 apt install -y software-properties-common python-software-properties nginx memcached git tor
-
 apt install -y mariadb-server mariadb-client
 # переутановка БД - удалить /var/lib/mysql
 # mysql_install_db --user=mysql
 # mysql_secure_installation # обнуление базы
-
 apt install -y sphinxsearch
-service sphinxsearch stop
+apt install postgresql-10
 
 #if myAskYN "Install php5.6 ?"; then
 ############# for PHP 5
@@ -90,7 +90,7 @@ service php5.6-fpm stop
 apt -y install php7.2 php7.2-bcmath php7.2-cgi php7.2-cli php7.2-common php7.2-curl php7.2-fpm php7.2-gd php7.2-imap php7.2-json php7.2-mbstring php7.2-mysql php7.2-opcache php7.2-zip
 sed -i.bak "s/short_open_tag = Off/short_open_tag = On/g" /etc/php/7.2/fpm/php.ini
 sed -i.bak "s/short_open_tag = Off/short_open_tag = On/g" /etc/php/7.2/cli/php.ini
-service php7.2-fpm stop
+
 
 ############# NGINX configure
 mkdir /etc/nginx/ssl
@@ -105,7 +105,14 @@ chown -R root:root /etc/nginx/
 find /etc/nginx/ -type f -exec chmod 0664 {} \;
 # find . -type d -exec chmod 0775 {} \;
 # chenge nginx.conf user to www-data
+
+service php7.2-fpm stop
 service nginx stop
+service sphinxsearch stop
+service memcached stop
+service mysql stop
+service mysql stop
+service postgresql stop
 
 apt upgrade -y
 
@@ -124,4 +131,8 @@ cp /home/wephost/etc/nginx/sites-enabled/wephost.conf /etc/nginx/conf.d/
 
 fi
 
+echo "ControlPort 9051" >> /etc/tor/torrc
+service tor stop
 
+apt install net-tools virt-manager ssh autossh htop
+ssh-add ~/.ssh/id_rsa # set default key
