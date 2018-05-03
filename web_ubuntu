@@ -134,5 +134,5 @@ fi
 echo "ControlPort 9051" >> /etc/tor/torrc
 service tor stop
 
-apt install net-tools virt-manager ssh autossh htop
+apt install net-tools virt-manager ssh autossh htop composer
 ssh-add ~/.ssh/id_rsa # set default key
