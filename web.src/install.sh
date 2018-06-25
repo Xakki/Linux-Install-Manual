@@ -29,7 +29,7 @@ exit 0
 echo
 apt-get -qq update
 apt-get -qq install nginx php7.2 php7.2-cli php7.2-curl php7.2-fpm php7.2-gd php7.2-imap php7.2-json php7.2-mbstring php7.2-mysql php7.2-opcache php7.2-pgsql php7.2-zip
-
+apt-get -qq install git;
 #apt-get -qq install build-essential autoconf re2c bison libssl-dev libcurl4-openssl-dev pkg-config libpng-dev libxml2-dev libxml2 libcurl3
 
 
