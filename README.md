@@ -1,3 +1,10 @@
-Настройка локального компа
+Configure desktop on Ubuntu 18.04 for web development!
 
-# wget -nv --cache=off https://raw.githubusercontent.com/Xakki/kvm.scripts/master/web_ubuntu & chmod 770 web_ubuntu & ./web_ubuntu
+```
+wget -nv --cache=off https://raw.githubusercontent.com/Xakki/Linux-Install-Manual/master/ubuntuDesktop & chmod 770 ubuntuDesktop & ./ubuntuDesktop
+```
+
+Configure server on Debian for web
+```
+wget -nv --cache=off https://raw.githubusercontent.com/Xakki/Linux-Install-Manual/master/web.src/install.sh & chmod 770 install.sh & ./install.sh
+```
