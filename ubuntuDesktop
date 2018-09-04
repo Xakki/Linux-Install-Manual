@@ -22,7 +22,7 @@ fi
 
 apt-get -qq install lsb-release
 codeName="$(lsb_release -c -s)"
-srcMaster="https://github.com/Xakki/Linux-Install-Manual/raw/master"
+srcMaster="https://raw.githubusercontent.com/Xakki/Linux-Install-Manual/master"
 
 echo 
 echo "****** Start ******" 
@@ -59,13 +59,13 @@ myAskYN "APT configured! Continue?" || exit 0
 echo
 
 apt update
-apt install -y software-properties-common python-software-properties nginx memcached git tor
+apt install -y software-properties-common nginx memcached git tor
 apt install -y mariadb-server mariadb-client
 # переутановка БД - удалить /var/lib/mysql
 # mysql_install_db --user=mysql
 # mysql_secure_installation # обнуление базы
 apt install -y sphinxsearch
-apt install postgresql-10
+apt install -y postgresql-10
 
 #if myAskYN "Install php5.6 ?"; then
 ############# for PHP 5
@@ -112,6 +112,14 @@ service postgresql stop
 
 apt upgrade -y
 
+echo "ControlPort 9051" >> /etc/tor/torrc
+service tor stop
+
+apt install -y net-tools virt-manager ssh autossh htop composer
+ssh-add ~/.ssh/id_rsa # set default key
+
+##########################
+
 if myAskYN "Set link? Attention! Old files will be removed! "; then
 
 rm -R /etc/sphinxsearch
@@ -126,9 +134,3 @@ ln -sf /media/DATA/www/DB/sphinxsearch /var/lib/sphinxsearch
 cp /home/wephost/etc/nginx/sites-enabled/wephost.conf /etc/nginx/conf.d/
 
 fi
-
-echo "ControlPort 9051" >> /etc/tor/torrc
-service tor stop
-
-apt install net-tools virt-manager ssh autossh htop composer
-ssh-add ~/.ssh/id_rsa # set default key
