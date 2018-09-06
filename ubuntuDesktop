@@ -99,8 +99,11 @@ wget $srcMaster/src/nginx/proxy_params -O /etc/nginx/proxy_params
 wget $srcMaster/src/nginx/static_params -O /etc/nginx/static_params
 chown -R root:root /etc/nginx/
 find /etc/nginx/ -type f -exec chmod 0664 {} \;
+sed -i.bak "s/user  nginx/user  www-data/g" /etc/nginx/nginx.conf
+
 # find . -type d -exec chmod 0775 {} \;
-# chenge nginx.conf user to www-data
+
+sed -i.bak "s/START=no/START=yes/g" /etc/default/sphinxsearch
 
 service php7.2-fpm stop
 service nginx stop
