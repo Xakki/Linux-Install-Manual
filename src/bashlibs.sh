@@ -16,7 +16,11 @@ myAskYN()
     if [[ "$AMSURE" = "y" ]] ; then
        return 0
     else
-       return 1
+        if [[ "$AMSURE" = "n" ]] ; then
+           return 1
+        else
+           exit 0
+        fi
     fi
 }
 
